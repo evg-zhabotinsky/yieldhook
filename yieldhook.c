@@ -72,7 +72,9 @@ static void hookf (lua_State *L, lua_Debug *ar) {
       lua_pushinteger(L, ar->currentline);  /* push current line */
     else lua_pushnil(L);
     lua_assert(lua_getinfo(L, "lS", ar));
-    int yield = lua_gethookmask(L) & LUA_MASKYIELD ? 1 : 0;  //ADDED
+    int yield =                                                  //ADDED
+      (ar->event == LUA_HOOKLINE || ar->event == LUA_HOOKCOUNT)  //ADDED
+      && (lua_gethookmask(L) & LUA_MASKYIELD) ? 1 : 0;           //ADDED
     lua_call(L, 2, yield);  /* call hook function */  //CHANGED from 0 to yield
     if (yield && lua_toboolean(L, -1))  //ADDED
       lua_yield(L, 0);                  //ADDED

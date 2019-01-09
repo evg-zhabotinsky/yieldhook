@@ -12,7 +12,7 @@ thing it does *and the event was either line or count*. This library only
 exposes this feature to Lua code by means of a C hook function that calls
 the provided Lua one and then yields if that returned a truth.
 Therefore, `coroutine.resume` returns just `true` when the hook yields, and
-attempting to yield when event is call or return will raise an error.
+attempts to yield when event is not `"line"` or `"count"` will be ignored.
 
 This repository includes a simple test program that demonstrates preemptive
 multitasking in pure Lua plus this small library. It runs in a single OS
