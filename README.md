@@ -8,11 +8,11 @@ yield.
 
 Note, however, that Lua only allows a C hook to yield without continuation
 (i.e. in non-resumable manner) or any values, and only if it's the last
-thing it does. This library only exposes this feature to Lua code by means
-of a C hook function that calls the provided Lua one and then yields if
-that returned a truth. If the underlying contract is broken, an error will
-be thrown and the hooked coroutine terminated. Specifically, yielding normally
-from the hook will do that.
+thing it does *and the event was either line or count*. This library only
+exposes this feature to Lua code by means of a C hook function that calls
+the provided Lua one and then yields if that returned a truth.
+Therefore, `coroutine.resume` returns just `true` when the hook yields, and
+attempting to yield when event is call or return will raise an error.
 
 This repository includes a simple test program that demonstrates preemptive
 multitasking in pure Lua plus this small library. It runs in a single OS
@@ -20,7 +20,7 @@ thread, of course, since ANSI C has no threading facilities and therefore
 pure Lua has none either.
 
 The project is mostly inspired by Minecraft mod OpenComputers having no
-preemptive multitasking, at the time of writing.
+preemptive multitasking, at the time of writing, to see if it can be fixed.
 
 *P.S.:*
 I actually tried to implement it myself at first, but then realized that I
